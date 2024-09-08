@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.security.test.dto.Product;
+import com.security.test.entity.UserInfo;
 import com.security.test.services.ProductService;
 
 @RestController
@@ -23,6 +26,12 @@ public class ProductController {
 	public String welcome() {
 		
 		return "welcome this endpoint is not  secure!!";
+	}
+	
+	@PostMapping("/new")
+	public String addNewUser(@RequestBody UserInfo userInfo) {
+		
+		return productService.addUser(userInfo);
 	}
 	
 	@GetMapping("/products")

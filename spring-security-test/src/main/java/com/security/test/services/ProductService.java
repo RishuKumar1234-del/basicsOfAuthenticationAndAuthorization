@@ -3,9 +3,13 @@ package com.security.test.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.security.test.dto.Product;
+import com.security.test.entity.UserInfo;
+import com.security.test.repository.UserInfoRepo;
 
 import jakarta.annotation.PostConstruct;
 
@@ -13,6 +17,12 @@ import jakarta.annotation.PostConstruct;
 public class ProductService {
 	
 	List<Product> productList=null;
+	
+	@Autowired
+	private UserInfoRepo unrepo;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@PostConstruct
 	public void loadProductFromDB() {
@@ -32,6 +42,15 @@ public class ProductService {
 	public Product getProductById(int pid){
 		return productList.stream().filter(t->t.getPid()==pid).findAny()
 				.orElseThrow(()->new RuntimeException("product with id " +pid +" is not found"));
+	}
+	
+	
+	public String addUser(UserInfo userInfo) {
+		userInfo.setPassword(passwordEncoder.encode(userInfo.getPassword()));
+		unrepo.save(userInfo);
+		
+		return "user added to system";
+		
 	}
 	
 	

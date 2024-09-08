@@ -29,18 +29,18 @@ public class SecurityConfig {
 	@Bean
 	public UserDetailsService userDetailsService(PasswordEncoder encoder) {
 		
-		//first user
-		UserDetails admin =User.withUsername("Rishu")
-				         .password(encoder.encode("rishu123"))
-				         .roles("ADMIN")
-				         .build();
-		//second user
-		UserDetails user=User.withUsername("Ranjeet")
-		         .password(encoder.encode("raju123"))
-		         .roles("USER")
-		         .build();
+//		//first user
+//		UserDetails admin =User.withUsername("Rishu")
+//				         .password(encoder.encode("rishu123"))
+//				         .roles("ADMIN")
+//				         .build();
+//		//second user
+//		UserDetails user=User.withUsername("Ranjeet")
+//		         .password(encoder.encode("raju123"))
+//		         .roles("USER")
+//		         .build();
 		
-		return new InMemoryUserDetailsManager(admin,user);
+		return new UserInfoUserDetailsService();
 	}
 	
 	//autherization
@@ -50,7 +50,7 @@ public class SecurityConfig {
 		
 	  return	http.csrf().disable()
 		    .authorizeHttpRequests()
-		    .requestMatchers("Product/test").permitAll()
+		    .requestMatchers("Product/test","Produc/new").permitAll()
 		    .and()
 		    .authorizeHttpRequests().requestMatchers("/Product/**")
 		    .authenticated()
